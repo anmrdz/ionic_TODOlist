@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { ApiProvider } from '../../providers/api/api';
 
 /**
@@ -20,7 +20,9 @@ export class RegisterPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public api: ApiProvider) {
+              private api: ApiProvider,
+              private toastCtrl: ToastController,
+              private loadingCtrl: LoadingController) {
   }
 
   ionViewDidLoad() {
@@ -36,13 +38,24 @@ export class RegisterPage {
 
     }
 
+    const loading = this.loadingCtrl.create({
+      content: 'Cargando...'
+    });
+
+    loading.present();
+
     this.api.register(params).subscribe((status: boolean) => {
+      loading.dismiss()
+      const toast = this.toastCtrl.create();
       if(status) {
-        alert('Registrado!');
+        toast.setMessage('Usuario registrado con éxito')
+        toast.setDuration(1000);
         this.navCtrl.pop();
       } else {
-        alert('error');
+        toast.setMessage('Error al registrar el usuario')
+        toast.setDuration(3000);
       }
+      toast.present();
     });
 
   }

@@ -1,3 +1,4 @@
+import { CreateListPage } from './../pages/create-list/create-list';
 import { ApiProvider } from './../providers/api/api';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -11,13 +12,18 @@ import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { ListsPage } from '../pages/lists/lists';
+import { ItemsPage } from '../pages/items/items';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+    ListsPage,
+    CreateListPage,
+    ItemsPage
   ],
   imports: [
     BrowserModule,
@@ -30,7 +36,10 @@ import { HttpClientModule } from '@angular/common/http';
     MyApp,
     HomePage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+    ListsPage,
+    CreateListPage,
+    ItemsPage
   ],
   providers: [
     StatusBar,

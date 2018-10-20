@@ -12,16 +12,21 @@ import {map, catchError} from 'rxjs/operators';
 */
 @Injectable()
 export class ApiProvider {
-  public url: string;
+  private url: string;
+  private token: string;
 
   constructor(public http: HttpClient) {
     this.url = 'https://fede-todo-list.herokuapp.com/api';
+
+    this.loadToken();
   }
 
   public auth(params): Observable<boolean> {
     return this.http.post(`${this.url}/auth`, {
       auth: params
     }).pipe(map((response: any) => {
+      this.token = response.jwt;
+      this.saveToken();
       return true;
     }), catchError((error: HttpErrorResponse) => {
       return Observable.of(false);
@@ -37,4 +42,38 @@ export class ApiProvider {
       return Observable.of(false);
     }))
   }
+
+  public getLists(): Observable<any> {
+    return this.http.get(`${this.url}/v1/list`, {
+      headers: {
+        'Authorization': this.token
+      }
+    })
+  }
+
+  public createList(params):Observable<boolean> {
+    return this.http.post(`${this.url}/v1/list`, {list: params},{
+      headers: {
+        'Authorization': this.token
+      },
+
+    }).pipe(map((response: any) => {
+      return true;
+    }), catchError((error: HttpErrorResponse) => {
+      return Observable.of(false);
+    }))
+  }
+
+  private saveToken():void {
+    localStorage.setItem('token', this.token);
+  }
+
+  private loadToken():void{
+    this.token = localStorage.getItem('token');
+  }
+
+  public isAuth(): boolean {
+    return this.token? true : false;
+  }
+
 }
