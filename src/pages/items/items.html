@@ -7,12 +7,30 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Items</ion-title>
+    <ion-title>{{list?.name}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <ion-list>
+    <ion-list-header> Elementos de la lista  </ion-list-header>
+    <ion-item-sliding   *ngFor="let item of items">
+          <ion-item>
+          <ion-label>{{item.name}} </ion-label>
+          <ion-checkbox item-end color="dark" checked="{{item.status}}" (click)="updateItem(item, !item.status)"></ion-checkbox>
+        </ion-item>
+          <ion-item-options side="right">
+              <button ion-button color="secondary" (click)="deleteItem(item)">Borrar <ion-icon name="trash"></ion-icon> </button>
+          </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-fab right bottom>
+      <button ion-fab (click)="createItem()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+  </ion-fab>
 
 </ion-content>
